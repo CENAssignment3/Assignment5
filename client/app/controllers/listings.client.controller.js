@@ -82,10 +82,14 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
     };
 
     $scope.remove = function() {
-      /*
-        Implement the remove function. If the removal is successful, navigate back to 'listing.list'. Otherwise, 
-        display the error. 
-       */
+      Listings.delete(listing)
+              .then(function(response) {
+                //if the object is successfully saved redirect back to the list page
+                $state.go('listings.list', { successMessage: 'Listing succesfully deleted!' });
+              }, function(error) {
+                //otherwise display the error
+                $scope.error = 'Unable to delete listing!\n' + error;
+              });
     };
 
     /* Bind the success message to the scope if it exists as part of the current state */
@@ -101,5 +105,27 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
       }, 
       zoom: 14
     }
+    
+    $scope.markers = [];
+    var createMarker = function (info){
+                  
+                  var marker = new google.maps.Marker({
+                      map: $scope.map,
+                      position: new google.maps.LatLng(info.coordinates.latitude, info.coordinates.longitude),
+                      title: info.name
+                  });
+                  marker.content = '<div class="infoWindowContent">' + info.code + '</div>';
+                  
+                  google.maps.event.addListener(marker, 'click', function(){
+                      infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
+                      infoWindow.open($scope.map, marker);
+                  });
+                  
+                  $scope.markers.push(marker);
+              }  
+              
+      for (i = 0; i < $scope.listings.length; i++){
+          createMarker($scope.listings[i]);
+      }
   }
 ]);

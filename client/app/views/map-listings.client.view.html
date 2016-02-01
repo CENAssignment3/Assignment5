@@ -8,4 +8,10 @@
     https://angular-ui.github.io/angular-google-maps/#!/api/markers
     https://angular-ui.github.io/angular-google-maps/#!/api/windows
   -->
-<h1>Map View</h1>
+<div id="map_canvas" ng-controller="ListingsController">
+    <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options">
+        <div ng-repeat="listing in listings">
+            <markers models="listings" coords="'coordinates'"></markers>
+        </div>
+    </ui-gmap-google-map>
+</div>
