@@ -115,27 +115,4 @@ angular.module('listings').controller('ListingsController', ['$scope', '$locatio
       }, 
       zoom: 14
     }
-    
-    $scope.markers = [];
-    var createMarker = function (info){
-                  
-                  var marker = new google.maps.Marker({
-                      map: $scope.map,
-                      position: new google.maps.LatLng(info.coordinates.latitude, info.coordinates.longitude),
-                      title: info.name
-                  });
-                  marker.content = '<div class="infoWindowContent">' + info.code + '</div>';
-                  
-                  google.maps.event.addListener(marker, 'click', function(){
-                      infoWindow.setContent('<h2>' + marker.title + '</h2>' + marker.content);
-                      infoWindow.open($scope.map, marker);
-                  });
-                  
-                  $scope.markers.push(marker);
-              }  
-              
-      for (i = 0; i < $scope.listings.length; i++){
-          createMarker($scope.listings[i]);
-      }
-  }
-]);
+}]);
